@@ -2763,6 +2763,10 @@ int mapfile_savestandalone_stage2b ( void )
 		timestampactivity(0, "adding charactercreatorplus skin files");
 		addfoldertocollection("charactercreatorplus\\skins");
 
+		// coopnet: co-op settings and the animations co-op player characters use
+		extern void coopnet_export_addfiles(void);
+		coopnet_export_addfiles();
+
 		// start for loop
 		t.e = 1;
 		cstr pProgressPercLog = cstr("g_mapfile_fProgressSpan:") + g_mapfile_fProgressSpan;
@@ -3649,6 +3653,10 @@ void mapfile_savestandalone_stage4 ( void )
 	strcpy(pCritDLLFilename, "version.ini");
 	t.dest_s = t.exepath_s + t.exename_s + "\\" + pCritDLLFilename;
 	if (FileExist(pCritDLLFilename) == 1) CopyAFile(pCritDLLFilename, t.dest_s.Get());
+
+	// coopnet: Play launcher, coop.ini, How to play.txt, steam_appid.txt
+	extern void coopnet_export_copyextras(const char* pExportFolder, const char* pExeName);
+	coopnet_export_copyextras(cstr(t.exepath_s + t.exename_s).Get(), t.exename_s.Get());
 
 	// for wicked, create fonts and shaders folder
 	cstr destExeRoot_s = t.exepath_s + t.exename_s;

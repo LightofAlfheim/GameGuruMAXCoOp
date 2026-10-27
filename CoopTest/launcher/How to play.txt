@@ -1,0 +1,36 @@
+HOW TO PLAY
+===========
+
+Double-click "Play". Then:
+
+  Play           - play on your own.
+  Join co-op     - play with a friend. Make sure Steam is open first.
+                   You'll see a list of Steam friends who are hosting:
+                   click the one you want to join.
+  Host co-op     - you host. Friends click "Join co-op" and pick you from
+                   their list (up to 3 friends can join).
+
+When the game opens, start the same level as your friend.
+
+
+Steam invites
+-------------
+Don't accept Steam invites for this game - they open a different game ("Spacewar").
+Use "Join co-op" and pick your friend from the list instead.
+
+
+If Windows says "Windows protected your PC"
+--------------------------------------------
+Click "More info", then "Run anyway". This happens because the game isn't from a big
+publisher, not because something is wrong.
+
+
+If it won't connect
+-------------------
+- "Your game files don't match the host's": you and the host have different versions,
+  or game files were changed. Get the same copy of the game as everyone else.
+- Check Steam is open and you're signed in, and that you and your friend are
+  Steam friends.
+- Check your friend clicked "Host co-op" and has started the level.
+- Still stuck? Close the game and send your friend the file "coopnet-client.log"
+  from this folder.

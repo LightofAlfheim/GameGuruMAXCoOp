@@ -247,3 +247,9 @@ GameGuru Core/Guru-WickedMAX/Template_Windows.vcxproj.user
 GameGuru Core/Guru-WickedMAX/Wicked-MAX/x64/ReleaseTEST/mipastu medieval.ipdb
 AI-CompileBuildDeployJustUPLOAD.bat
 AI-CompileBuildDeploy.bat
+
+# personal co-op test project name for CoopTest launchers
+CoopTest/project.txt
+
+# built co-op launcher (CoopTest\launcher\build-launcher.bat)
+CoopTest/launcher/*.exe

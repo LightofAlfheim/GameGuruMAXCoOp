@@ -26,6 +26,7 @@
 
 // DarkLUA needs access to the T global (but could be in two locations)
 #include "..\..\..\..\GameGuru\Include\gameguru.h"
+#include "..\..\..\..\GameGuru\Include\M-CoopNet.h"
 
 // Control of NAVMESH
 #include "..\..\..\..\Guru-WickedMAX\GGRecastDetour\GGRecastDetour.h"
@@ -915,6 +916,10 @@ static int LUA_GETTOP(lua_State* L)
 		fY = lua_tonumber(L, 3);
 		fZ = lua_tonumber(L, 4);
 	}
+	// coopnet: camera override/position/angle from a character chasing the remote player go to them
+	extern bool coopnet_redirectplayercommand(int, int, float, float, float);
+	if ( iDataMode == 1 && coopnet_redirectplayercommand(1, tvalue, 0, 0, 0) ) return 0;
+	if ( ( iDataMode == 11 || iDataMode == 12 ) && tcameraid == 0 && coopnet_redirectplayercommand(iDataMode == 11 ? 2 : 3, 0, fX, fY, fZ) ) return 0;
 	switch ( iDataMode )
 	{
 		case 1 : g.luacameraoverride = tvalue; break;
@@ -1463,6 +1468,7 @@ static int LUA_GETTOP(lua_State* L)
 		{
 			if (t.entityelement[iEntityIndex].collected == 0)
 			{
+				coopnet_itemleftworld(iEntityIndex); // coopnet: shared pickups vanish for the partner too
 				int store = t.e; t.e = iEntityIndex;
 				entity_lua_collisionoff();
 				t.e = store;
@@ -12243,6 +12249,24 @@ int int_core_sendmessagei(lua_State* L, eInternalCommandNames eInternalCommandVa
 		t.e = lua_tonumber(L, 1);
 		t.v = lua_tonumber(L, 2);
 	}
+	// coopnet: world side effects of a zombie script (blood decal pools, sounds) are replayed on the client
+	{
+		int iCoopCmd = 0;
+		switch (eInternalCommandValue)
+		{
+			case enum_hide: iCoopCmd = COOPNET_LUACMD_HIDE; break;
+			case enum_show: iCoopCmd = COOPNET_LUACMD_SHOW; break;
+			case enum_destroy: iCoopCmd = COOPNET_LUACMD_DESTROY; break;
+			case enum_setsound: iCoopCmd = COOPNET_LUACMD_SETSOUND; break;
+			case enum_playsound: iCoopCmd = COOPNET_LUACMD_PLAYSOUND; break;
+			case enum_playsoundifsilent: iCoopCmd = COOPNET_LUACMD_PLAYSOUNDIFSILENT; break;
+			case enum_loopsound: iCoopCmd = COOPNET_LUACMD_LOOPSOUND; break;
+			case enum_stopsound: iCoopCmd = COOPNET_LUACMD_STOPSOUND; break;
+			case enum_playnon3dsound: iCoopCmd = COOPNET_LUACMD_PLAYNON3DSOUND; break;
+			default: break;
+		}
+		if (iCoopCmd) coopnet_forwardluacommand(iCoopCmd, t.e, (float)t.v);
+	}
 	switch (eInternalCommandValue)
 	{
 		case enum_collisionon: entity_lua_collisionon(); break;
@@ -12780,6 +12804,24 @@ int int_core_sendmessagef(lua_State* L, eInternalCommandNames eInternalCommandVa
 	{
 		t.e = lua_tonumber(L, 1);
 		t.v_f = lua_tonumber(L, 2);
+	}
+	// coopnet: a zombie script moving other entities (e.g. a blood decal pool) is replayed on the client
+	{
+		int iCoopCmd = 0;
+		switch (eInternalCommandValue)
+		{
+			case enum_setpositionx: iCoopCmd = COOPNET_LUACMD_SETPOSITIONX; break;
+			case enum_setpositiony: iCoopCmd = COOPNET_LUACMD_SETPOSITIONY; break;
+			case enum_setpositionz: iCoopCmd = COOPNET_LUACMD_SETPOSITIONZ; break;
+			case enum_resetpositionx: iCoopCmd = COOPNET_LUACMD_RESETPOSITIONX; break;
+			case enum_resetpositiony: iCoopCmd = COOPNET_LUACMD_RESETPOSITIONY; break;
+			case enum_resetpositionz: iCoopCmd = COOPNET_LUACMD_RESETPOSITIONZ; break;
+			case enum_setrotationx: iCoopCmd = COOPNET_LUACMD_SETROTATIONX; break;
+			case enum_setrotationy: iCoopCmd = COOPNET_LUACMD_SETROTATIONY; break;
+			case enum_setrotationz: iCoopCmd = COOPNET_LUACMD_SETROTATIONZ; break;
+			default: break;
+		}
+		if (iCoopCmd) coopnet_forwardluacommand(iCoopCmd, t.e, t.v_f);
 	}
 	switch (eInternalCommandValue)
 	{

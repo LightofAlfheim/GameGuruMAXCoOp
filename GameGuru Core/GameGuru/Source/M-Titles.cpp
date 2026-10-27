@@ -1858,6 +1858,8 @@ void loadingpageprogress ( int delta )
 	if (  t.game.levelloadprogress>100  )  t.game.levelloadprogress = 100;
 	titles_loadingpageupdate ( );
 	handletitlesmusic();
+	extern void coopnet_loadingupdate(void);
+	coopnet_loadingupdate(); // coopnet: keep co-op connections alive while the level loads
 
 	// log when percentage progresses (to determine if loading is stuck/delayed on something)
 	char pProgressReport[256];
@@ -2242,6 +2244,8 @@ void titleslua_blocking_run(void)
 			bForceRender = true;
 			if (titleslua_main_loopcode() == true) bRunLoop = false;
 			bForceRender = false;
+			extern void coopnet_loadingupdate(void);
+			coopnet_loadingupdate(); // coopnet: a screen between levels - keep co-op connections alive
 		}
 	}
 }

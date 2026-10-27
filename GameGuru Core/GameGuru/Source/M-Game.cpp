@@ -26,6 +26,7 @@ using namespace GPUParticles;
 using namespace GGTerrain;
 using namespace GGTrees;
 #include "GGRecastDetour.h"
+#include "M-CoopNet.h"
 GGRecastDetour g_RecastDetour;
 bool g_bShowRecastDetourDebugVisuals = false;
 int old_render_params2 = 0;
@@ -2360,6 +2361,7 @@ bool game_masterroot_gameloop_loopcode(int iUseVRTest)
 	// within gameloop, can have a in-game menu loop, so handle this if used
 	if (g_iInGameMenuState == 1)
 	{
+		coopnet_menuupdate(); // coopnet: keep co-op connections alive while the menu is open
 		if (titleslua_main_loopcode() == true)
 		{
 			game_masterroot_gameloop_afterexitgamemenu();
@@ -4061,6 +4063,9 @@ void game_init ( void )
 
 void game_freegame ( void )
 {
+	// Co-op networking
+	coopnet_shutdown ( );
+
 	// Ensure we are switched back to full res
 	t.bHiResMode = true;
 	t.bOldHiResMode = true;
@@ -4797,6 +4802,9 @@ void game_main_loop ( void )
 	if ( g.gproducelogfiles == 2 ) timestampactivity(0,"calling hud_updatehudlayerobjects");
 	hud_updatehudlayerobjects ( );
 
+	// Co-op networking (inactive unless -nethost / -netjoin= on command line)
+	coopnet_update ( );
+
 	// trigger screen to be grabbed for a HUD image
 	bool bGrabSceneToStoreInImage = true;
 	if (bGrabSceneToStoreInImage == true)
@@ -4944,6 +4952,7 @@ void game_main_stop ( void )
 
 void game_jump_to_level_from_lua (int iResetStates)
 {
+	if (coopnet_levelexit(false, iResetStates)) return; // coopnet: the co-op team leaves the level together
 	if (  t.game.gameisexe == 1 ) 
 	{
 		if (  t.game.gameloop == 1 && t.game.levelendingcycle  ==  0 ) 
@@ -4961,6 +4970,7 @@ void game_jump_to_level_from_lua (int iResetStates)
 
 void game_finish_level_from_lua ( void )
 {
+	if (coopnet_levelexit(true, 0)) return; // coopnet: the co-op team leaves the level together
 	if (  t.game.gameisexe == 1 ) 
 	{
 		if (  t.game.gameloop == 1 && t.game.levelendingcycle  ==  0 ) 

@@ -1210,6 +1210,8 @@ void entity_lua_checkpoint ( void )
 	t.playercheckpoint.y=CameraPositionY(0);
 	t.playercheckpoint.z=CameraPositionZ(0);
 	t.playercheckpoint.a=t.entityelement[t.e].ry;
+	extern void coopnet_sharecheckpoint(float, float, float, float);
+	coopnet_sharecheckpoint(t.playercheckpoint.x, t.playercheckpoint.y, t.playercheckpoint.z, t.playercheckpoint.a); // coopnet: checkpoints are shared
 
 	// record all soundloops at the time
 	bool bPauseAndResumeFromGameMenu = false;
@@ -2967,6 +2969,8 @@ void entity_lua_fireweapon ( bool instant )
 
 void entity_lua_hurtplayer ( void )
 {
+	extern bool coopnet_hurtremoteplayer(int, int);
+	if (coopnet_hurtremoteplayer(t.e, t.v)) return; // coopnet: this attacker is chasing the remote player, damage goes to them
 	t.tdamage=t.v ; t.te=t.e ; t.tDrownDamageFlag=0;
 	physics_player_takedamage ( );
 }
@@ -3101,6 +3105,9 @@ void entity_lua_changeplayerweapon(void)
 
 void entity_lua_changeplayerweaponid(void)
 {
+	extern bool coopnet_redirectplayercommand(int, int, float, float, float);
+	if (coopnet_redirectplayercommand(6, t.v, 0, 0, 0)) return; // coopnet: a grab taking/returning the remote player's weapon
+
 	extern bool bForceGunUnderWater;
 	if (bForceGunUnderWater)
 		return;

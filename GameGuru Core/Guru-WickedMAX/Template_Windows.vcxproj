@@ -534,6 +534,8 @@
     <ClInclude Include="..\GameGuru\Include\M-Entity.h" />
     <ClInclude Include="..\GameGuru\Include\M-Explosion&amp;Fire.h" />
     <ClInclude Include="..\GameGuru\Include\M-Game.h" />
+    <ClInclude Include="..\GameGuru\Include\M-CoopNet.h" />
+    <ClInclude Include="..\GameGuru\Include\M-CoopNetSteam.h" />
     <ClInclude Include="..\GameGuru\Include\M-GridEdit.h" />
     <ClInclude Include="..\GameGuru\Include\M-GridEditB.h" />
     <ClInclude Include="..\GameGuru\Include\M-Gun.h" />
@@ -713,6 +715,43 @@
     <ClCompile Include="..\GameGuru\Source\M-Entity.cpp" />
     <ClCompile Include="..\GameGuru\Source\M-Explosion&amp;Fire.cpp" />
     <ClCompile Include="..\GameGuru\Source\M-Game.cpp" />
+    <ClCompile Include="..\GameGuru\Source\M-CoopNetSteam.cpp" />
+    <ClCompile Include="..\GameGuru\Source\M-CoopNetEditor.cpp" />
+    <ClCompile Include="..\GameGuru\Source\M-CoopNet.cpp">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\callbacks.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\compress.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\host.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\list.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\packet.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\peer.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\protocol.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\win32.c">
+      <AdditionalIncludeDirectories>..\SDK\ENet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
     <ClCompile Include="..\GameGuru\Source\M-GridEdit.cpp" />
     <ClCompile Include="..\GameGuru\Source\M-GridEditB.cpp" />
     <ClCompile Include="..\GameGuru\Source\M-Gun.cpp" />

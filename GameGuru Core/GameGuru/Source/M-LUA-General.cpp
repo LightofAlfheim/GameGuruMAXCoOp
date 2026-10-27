@@ -1017,6 +1017,9 @@ void lua_unfreezeai ( void )
 
 void lua_freezeplayer ( void )
 {
+	extern bool coopnet_redirectplayercommand(int, int, float, float, float);
+	if (coopnet_redirectplayercommand(4, 0, 0, 0, 0)) return; // coopnet: a character chasing the remote player froze them, not us
+
 	// if already called, do not call twice!
 	if (t.aisystem.processplayerlogic == 0) return;
 	
@@ -1061,6 +1064,9 @@ void lua_freezeplayer ( void )
 
 void lua_unfreezeplayer ( void )
 {
+	extern bool coopnet_redirectplayercommand(int, int, float, float, float);
+	if (coopnet_redirectplayercommand(5, 0, 0, 0, 0)) return; // coopnet: unfreeze goes to the remote player too
+
 	// if already unfrozen, do not call twice!
 	if (t.aisystem.processplayerlogic == 1) return;
 

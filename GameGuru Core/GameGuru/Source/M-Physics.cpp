@@ -2231,8 +2231,13 @@ void physics_player_handledeath ( void )
 				{
 					if (  t.playercontrol.startlives>0 && t.player[t.plrid].lives == 0 && t.game.gameisexe == 1 ) 
 					{
-						//  280415 - GAME OVER flag!
-						t.game.gameloop=0 ; t.game.lostthegame=1;
+						// coopnet: while a co-op partner is still playing, spectate them instead of game over
+						extern bool coopnet_outoflives(void);
+						if (!coopnet_outoflives())
+						{
+							//  280415 - GAME OVER flag!
+							t.game.gameloop=0 ; t.game.lostthegame=1;
+						}
 					}
 					else
 					{

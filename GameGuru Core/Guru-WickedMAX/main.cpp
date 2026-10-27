@@ -99,6 +99,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Launch Timer Started
 	dwLaunchTimer = timeGetTime();
 
+	// coopnet: co-op over Steam starts Steam before the renderer exists, so its overlay can attach
+	extern void coopnet_earlylaunch ( const char* pCommandLine );
+	coopnet_earlylaunch ( gRefCommandLineString );
+
 	//PE: If we dont have any command line parameters check if another copy is running.
 	//PE: We could need multiply copies running when in standalone (but will always have parameters).
 	CreateMutexA(0, FALSE, "Local\\$gamegurumaxrunningnow$");
@@ -248,6 +252,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				if (iActiveViewPorts > 1) bKeepActiveEvenInBackground = true;
 				extern bool bExport_Standalone_Window;
 				if (bExport_Standalone_Window == true) bKeepActiveEvenInBackground = true;
+				bool coopnet_keeprunninginbackground(void);
+				if (coopnet_keeprunninginbackground() == true) bKeepActiveEvenInBackground = true;
 				if (bKeepActiveEvenInBackground == true)
 				{
 					g_bActiveApp = true;

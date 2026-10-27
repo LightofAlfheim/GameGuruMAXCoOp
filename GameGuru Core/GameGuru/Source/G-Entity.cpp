@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "gameguru.h"
 #include "CObjectsC.h"
+#include "M-CoopNet.h"
 
 #include "..\Imgui\imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
@@ -2401,9 +2402,11 @@ void entity_controlrecalcdist ( void )
 	{
 		if (  ObjectExist(t.tobj)  ==  1 ) 
 		{
-			t.distx_f=CameraPositionX(0)-ObjectPositionX(t.tobj);
-			t.disty_f=CameraPositionY(0)-ObjectPositionY(t.tobj);
-			t.distz_f=CameraPositionZ(0)-ObjectPositionZ(t.tobj);
+			float fViewX = CameraPositionX(0), fViewY = CameraPositionY(0), fViewZ = CameraPositionZ(0);
+			coopnet_targetremote(t.e, &fViewX, NULL, &fViewZ, &fViewY, NULL); // coopnet: characters chasing the remote player measure from them
+			t.distx_f=fViewX-ObjectPositionX(t.tobj);
+			t.disty_f=fViewY-ObjectPositionY(t.tobj);
+			t.distz_f=fViewZ-ObjectPositionZ(t.tobj);
 			t.dist_f=Sqrt(abs(t.distx_f*t.distx_f)+abs(t.disty_f*t.disty_f)+abs(t.distz_f*t.distz_f));
 			t.diffangle_f=atan2deg(t.distx_f,t.distz_f);
 			if (  t.diffangle_f<0  )  t.diffangle_f = t.diffangle_f+360;
@@ -2609,6 +2612,9 @@ void entity_applydamage ( void )
 			}
 		}
 	}
+
+	// coopnet: on the client, a hit on a zombie the host runs is sent to the host instead
+	if ( coopnet_forwardhit() ) return;
 
 	//  early exit
 	if (  t.entityelement[t.ttte].active == 0  )  return;
@@ -3607,6 +3613,8 @@ void entity_hitentity ( int e, int obj )
 
 void entity_triggerdecalatimpact ( float fX, float fY, float fZ )
 {
+	coopnet_forwardbloodimpact(fX, fY, fZ); // coopnet: blood at a bullet impact shows on the other machine too
+
 	// trigger decal at impact coordinate
 	// 111215 - and only if ignorematerial flag not set by GUNSPEC (for interactive HUD 'weapons')
 	if ( t.tttriggerdecalimpact>0 && (t.gunid==0 || g.firemodes[t.gunid][0].settings.ignorematerial == 0) )

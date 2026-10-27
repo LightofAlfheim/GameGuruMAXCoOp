@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="ENet">
+      <UniqueIdentifier>{f4f201b3-a35e-4c84-875a-c66fa3025f25}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -161,6 +166,9 @@
       <Filter>GameGuruEngine\GameGuruSourceCode</Filter>
     </ClInclude>
     <ClInclude Include="..\GameGuru\Include\M-Game.h">
+      <Filter>GameGuruEngine\GameGuruSourceCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameGuru\Include\M-CoopNet.h">
       <Filter>GameGuruEngine\GameGuruSourceCode</Filter>
     </ClInclude>
     <ClInclude Include="..\GameGuru\Include\M-Gun.h">
@@ -682,6 +690,39 @@
     </ClCompile>
     <ClCompile Include="..\GameGuru\Source\M-Game.cpp">
       <Filter>GameGuruEngine\GameGuruSourceCode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameGuru\Source\M-CoopNet.cpp">
+      <Filter>GameGuruEngine\GameGuruSourceCode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameGuru\Source\M-CoopNetSteam.cpp">
+      <Filter>GameGuruEngine\GameGuruSourceCode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameGuru\Source\M-CoopNetEditor.cpp">
+      <Filter>GameGuruEngine\GameGuruSourceCode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\callbacks.c">
+      <Filter>ENet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\compress.c">
+      <Filter>ENet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\host.c">
+      <Filter>ENet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\list.c">
+      <Filter>ENet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\packet.c">
+      <Filter>ENet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\peer.c">
+      <Filter>ENet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\protocol.c">
+      <Filter>ENet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDK\ENet\win32.c">
+      <Filter>ENet</Filter>
     </ClCompile>
     <ClCompile Include="..\GameGuru\Source\M-Gun.cpp">
       <Filter>GameGuruEngine\GameGuruSourceCode</Filter>

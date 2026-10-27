@@ -3421,6 +3421,14 @@ void mapeditorexecutable_loop(void)
 						ImGui::OpenPopup("Tools");
 			}
 
+			// coopnet: online co-op settings and testing (M-CoopNetEditor.cpp)
+			if (ImGui::BeginMenu("Co-op"))
+			{
+				extern void coopnet_editor_open(void);
+				if (ImGui::MenuItem("Co-op Settings...")) coopnet_editor_open();
+				ImGui::EndMenu();
+			}
+
 
 #ifndef GGMAXEDU
 			static bool bMarketHovered = false;
@@ -8908,6 +8916,9 @@ void mapeditorexecutable_loop(void)
 		//#####################
 
 		ProcessPreferences();
+
+		extern void coopnet_editor_window(void);
+		coopnet_editor_window(); // coopnet: Co-op Settings window (Co-op menu)
 
 		//########################
 		//#### Waypoint Tools ####

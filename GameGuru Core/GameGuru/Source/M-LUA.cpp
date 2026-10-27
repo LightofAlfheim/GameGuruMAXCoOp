@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "gameguru.h"
 #include "GGTerrain/GGTerrain.h"
+#include "M-CoopNet.h"
 
 #ifdef OPTICK_ENABLE
 #include "optick.h"
@@ -585,7 +586,8 @@ void lua_loop_begin ( void )
 			GetWindowRect(g_pGlob->hWnd, &r);
 			ClipCursor(&r);
 			g_bClipInForce = true;
-			if (g_bClipInForce == true) SetCursorPos(320, 240);
+			// coopnet: park inside the clip rect (was fixed 320,240 - outside it when the window is on another monitor)
+			if (g_bClipInForce == true) SetCursorPos((r.left + r.right) / 2, (r.top + r.bottom) / 2);
 		}
 		else
 		{
@@ -1228,9 +1230,11 @@ void lua_loop_allentities ( void )
 								else
 								{
 									t.strwork = cstr(cstr(t.entityelement[t.e].eleprof.aimainname_s.Get()) + "_main");
+									coopnet_lua_beginentity(t.e); // coopnet: g_PlayerPos*/g_PlayerHealth = this entity's (nearest) target
 									LuaSetFunction (t.strwork.Get(), 1, 0);
 									LuaPushInt (t.e); 
 									LuaCall ();
+									coopnet_lua_endentity(); // coopnet: back to the local player
 								}
 							}
 						}

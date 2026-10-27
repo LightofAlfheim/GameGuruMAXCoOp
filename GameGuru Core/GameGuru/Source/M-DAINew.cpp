@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "gameguru.h"
+#include "M-CoopNet.h"
 
 #include "GGRecastDetour.h"
 extern GGRecastDetour g_RecastDetour;
@@ -366,11 +367,17 @@ void darkai_calcplrvisible (charanimstatetype &cas)
 	// takes tcharanimindex - work out if entity A.I can see (stored until recalculated)
 	t.entityelement[cas.e].plrvisible = 0;
 	t.entityelement[cas.e].lua.flagschanged = 1;
-	if (t.player[t.plrid].health > 0)
+	// coopnet: the player this character can see may be the remote one (nearest-player targeting)
+	float fTargetX = ObjectPositionX(t.aisystem.objectstartindex), fTargetZ = ObjectPositionZ(t.aisystem.objectstartindex);
+	float fEyeX = CameraPositionX(t.terrain.gameplaycamera), fEyeY = CameraPositionY(t.terrain.gameplaycamera), fEyeZ = CameraPositionZ(t.terrain.gameplaycamera);
+	int iTargetHealth = t.player[t.plrid].health;
+	bool bTargetRemote = coopnet_targetremote(cas.e, &fTargetX, NULL, &fTargetZ, &fEyeY, &iTargetHealth);
+	if (bTargetRemote) { fEyeX = fTargetX; fEyeZ = fTargetZ; }
+	if (iTargetHealth > 0)
 	{
 		// work out distance between player and entity
-		float tttdx_f = ObjectPositionX(t.aisystem.objectstartindex) - ObjectPositionX(cas.obj);
-		float tttdz_f = ObjectPositionZ(t.aisystem.objectstartindex) - ObjectPositionZ(cas.obj);
+		float tttdx_f = fTargetX - ObjectPositionX(cas.obj);
+		float tttdz_f = fTargetZ - ObjectPositionZ(cas.obj);
 		float tttdd_f = Sqrt(abs(tttdx_f*tttdx_f) + abs(tttdz_f*tttdz_f));
 		float fDistanceRangeToCheck = MAXFREEZEDISTANCE;// t.maximumnonefreezedistance;
 		if (t.entityelement[cas.e].eleprof.conerange > 0) fDistanceRangeToCheck = t.entityelement[cas.e].eleprof.conerange;
@@ -412,9 +419,16 @@ void darkai_calcplrvisible (charanimstatetype &cas)
 				}
 
 				// location of player (if player camera can see enemy, vice versa)
-				float tbrayx2_f = CameraPositionX(t.terrain.gameplaycamera);
-				float tbrayy2_f = CameraPositionY(t.terrain.gameplaycamera);
-				float tbrayz2_f = CameraPositionZ(t.terrain.gameplaycamera);
+				float tbrayx2_f = fEyeX; // coopnet: was the camera (= local player's eye)
+				float tbrayy2_f = fEyeY;
+				float tbrayz2_f = fEyeZ;
+				if (bTargetRemote)
+				{
+					// coopnet: stop short of the remote player's puppet so its own head can't block the ray
+					float fRayX = tbrayx2_f - tbrayx1_f, fRayY = tbrayy2_f - tbrayy1_f, fRayZ = tbrayz2_f - tbrayz1_f;
+					float fRayLen = sqrtf(fRayX * fRayX + fRayY * fRayY + fRayZ * fRayZ);
+					if (fRayLen > 30.0f) { float fKeep = (fRayLen - 25.0f) / fRayLen; tbrayx2_f = tbrayx1_f + fRayX * fKeep; tbrayy2_f = tbrayy1_f + fRayY * fKeep; tbrayz2_f = tbrayz1_f + fRayZ * fKeep; }
+				}
 
 				// first ensure not going through physics terrain
 				if (ODERayTerrain(tbrayx1_f, tbrayy1_f, tbrayz1_f, tbrayx2_f, tbrayy2_f, tbrayz2_f, true) == 1)
