@@ -253,3 +253,6 @@ CoopTest/project.txt
 
 # built co-op launcher (CoopTest\launcher\build-launcher.bat)
 CoopTest/launcher/*.exe
+
+# built co-op installer (CoopTest/installer/build-installer.bat)
+CoopTest/installer/*.exe

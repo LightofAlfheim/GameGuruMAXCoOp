@@ -20,9 +20,22 @@ change: games exported from this build get co-op, with nothing to script in Lua.
 
 Not synced yet: switches, lifts and other scripted objects, projectiles and explosions.
 
+## Installing (no build needed)
+
+Run `GameGuruMAX-CoopSetup.exe` (from this repo's Releases). It finds GameGuru MAX in your Steam
+library, keeps the Steam exe as `GameGuruMAX-original.exe` and puts the co-op exe and launcher kit
+in its place. Only the exe is swapped, so you need your own copy of GameGuru MAX from Steam.
+**Uninstall** in the same tool puts the original back.
+
+Steam updates (and "Verify integrity of game files") put the Steam exe back. Run the installer
+again afterwards; if GameGuru MAX was updated, use an installer made for that version (the
+installer says which version it was made for).
+
+To make the installer: build the engine, then run `CoopTest\installer\build-installer.bat`.
+
 ## Using it
 
-1. Build the engine (see `NOTES.md` section 1) and the launcher (`CoopTest\launcher\build-launcher.bat`;
+1. Install as above, or build the engine (see `NOTES.md` section 1) and the launcher (`CoopTest\launcher\build-launcher.bat`;
    put `Play.exe` and `How to play.txt` in `<MAX folder>\coop\`).
 2. In the editor: **Co-op → Co-op Settings...** sets up the project and can start 2-4 copies on
    one PC for testing.
@@ -51,7 +64,7 @@ project name).
 | `GameGuru Core/GameGuru/Source/M-CoopNetEditor.cpp` | Co-op Settings window, local testing, export |
 | `GameGuru Core/GameGuru/Include/M-CoopNet*.h` | the hooks the engine calls |
 | `GameGuru Core/SDK/ENet/` | ENet 1.3.18, unmodified (MIT licence) |
-| `CoopTest/` | launcher source, test scripts, guide |
+| `CoopTest/` | launcher and installer source, test scripts, guide |
 
 The rest of the engine is touched only at small hooks marked `// coopnet:`. Co-op does nothing
 unless a `-net...` flag is given, so single player is unchanged.
