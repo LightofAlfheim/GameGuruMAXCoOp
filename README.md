@@ -1,3 +1,7 @@
+> **Co-op fork:** this is an unofficial fork of GameGuru MAX that adds 2-4 player online co-op
+> (Steam or direct IP) to exported games. See **[COOP.md](COOP.md)** for what it does and how to use
+> it. The original licence below still applies; this fork is not made or supported by The Game Creators.
+
 # The GameGuru MAX Repository
 
 This is not open source and remains copyright, see "Max\Guides\EULA.txt" for more information on license matters. This repository contains the current source code for GameGuru MAX and is under continual development.
